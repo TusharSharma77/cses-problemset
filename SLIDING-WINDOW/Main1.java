@@ -1,4 +1,5 @@
 import java.util.*;
+
 public class Main {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
@@ -9,7 +10,7 @@ public class Main {
         long b = sc.nextLong();
         long c = sc.nextLong();
         long xor = 0;
-      Deque<Integer> dq = new ArrayDeque<>();
+        long curr = 0;
         int i = 0;
         long[] list = new long[n];
         for (int j = 0; j < n; j++) {
@@ -18,16 +19,10 @@ public class Main {
             } else {
                 list[j] = (a * list[j - 1] + b) % c;
             }
-            while(!dq.isEmpty() && list[dq.peekLast()]>=list[j]){
-                dq.pollLast();
-            }
-            dq.offerLast(j);
+            curr += list[j];
             if (j - i + 1 == k) {
-               int v = dq.peekFirst();
-                xor ^= list[v];
-                if(dq.peekFirst()==i){
-                    dq.pollFirst();
-                }
+                xor ^= curr;
+                curr -= list[i];
                 i++;
             }
         }
