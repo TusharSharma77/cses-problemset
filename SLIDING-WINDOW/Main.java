@@ -1,38 +1,49 @@
+import java.io.*;
 import java.util.*;
+
 public class Main {
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        int n = sc.nextInt();
-        int k = sc.nextInt();
-        long x = sc.nextLong();
-        long a = sc.nextLong();
-        long b = sc.nextLong();
-        long c = sc.nextLong();
-        long xor = 0;
-      Deque<Integer> dq = new ArrayDeque<>();
+    public static void main(String[] args) throws Exception {
+
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine());
+
+        int n = Integer.parseInt(st.nextToken());
+        int k = Integer.parseInt(st.nextToken());
+
+        long[] arr = new long[n];
+
+        st = new StringTokenizer(br.readLine());
+        for (int i = 0; i < n; i++) {
+            arr[i] = Long.parseLong(st.nextToken());
+        }
+
+        HashMap<Long, Integer> map = new HashMap<>(n * 2);
+        StringBuilder sb = new StringBuilder();
+
         int i = 0;
-        long[] list = new long[n];
+
         for (int j = 0; j < n; j++) {
-            if (j == 0) {
-                list[j] = x;
-            } else {
-                list[j] = (a * list[j - 1] + b) % c;
-            }
-            while(!dq.isEmpty() && list[dq.peekLast()]>=list[j]){
-                dq.pollLast();
-            }
-            dq.offerLast(j);
+
+            long val = arr[j];
+            map.put(val, map.getOrDefault(val, 0) + 1);
+
             if (j - i + 1 == k) {
-               int v = dq.peekFirst();
-                xor ^= list[v];
-                if(dq.peekFirst()==i){
-                    dq.pollFirst();
+
+                sb.append(map.size()).append(" ");
+
+                long out = arr[i];
+
+                int cnt = map.get(out) - 1;
+                if (cnt == 0) {
+                    map.remove(out);
+                } else {
+                    map.put(out, cnt);
                 }
+
                 i++;
             }
         }
 
-        System.out.println(xor);
-        sc.close();
+        System.out.println(sb.toString().trim());
     }
 }
